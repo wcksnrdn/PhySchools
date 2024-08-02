@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Business and Energy Simulation</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Circular:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+    font-family: 'montserrat';
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgb(165, 165, 255), aqua, rgb(255, 90, 255));
+}
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+
+::-webkit-scrollbar {
+    height: 3px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff; 
+    border-radius: 5px; 
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff6b;
+    backdrop-filter: blur(10px);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 10px 0;
+    color: #333;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.simulation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.work-energy-system {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.block {
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+    position: absolute;
+    animation: move 2s linear infinite;
+}
+
+@keyframes move {
+    0% { left: 0; }
+    50% { left: calc(100% - 50px); }
+    100% { left: 0; }
+}
+
+.controls {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.controls input[type="range"] {
+    width: 80%;
+    appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.output {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.output h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation {
+    width: 100%;
+    text-align: center;
+}
+
+.explanation h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation p {
+    line-height: 1.6;
+}
+
+.explanation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.explanation li {
+    margin-bottom: 5px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+</style>
+<body>
+    <div class="container">
+        <header>
+            <h1>Business and Energy Simulation</h1>
+        </header>
+        <main>
+            <section class="simulation">
+                <div class="work-energy-system">
+                    <div class="block"></div>
+                </div>
+                <div class="controls">
+                    <label for="force">Force (N): <span id="forceValue">10</span> N</label>
+                    <input type="range" id="force" min="1" max="100" value="10">
+                    
+                    <label for="distance">Distance (m): <span id="distanceValue">10</span> m</label>
+                    <input type="range" id="distance" min="1" max="100" value="10">
+                </div>
+            </section>
+            <section class="output">
+                <h2>Work Done (W): <span id="workValue">100.00</span> J</h2>
+                <canvas id="workChart"></canvas>
+            </section>
+            <section class="explanation">
+                <h2>Understanding Work and Energy</h2>
+                <p>Work is defined as the product of the force applied to an object and the distance over which that force is applied. The formula is:</p>
+                <p><strong>W = F * d</strong></p>
+                <p>Where:</p>
+                <ul>
+                    <li><strong>W</strong> is the work done in joules (J)</li>
+                    <li><strong>F</strong> is the force in newtons (N)</li>
+                    <li><strong>d</strong> is the distance in meters (m)</li>
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Work and Energy Simulation by PhySchools</p>
+        </footer>
+    </div>
+    <script>
+        const forceSlider = document.getElementById('force');
+const distanceSlider = document.getElementById('distance');
+const forceValue = document.getElementById('forceValue');
+const distanceValue = document.getElementById('distanceValue');
+const workValue = document.getElementById('workValue');
+const workChart = document.getElementById('workChart').getContext('2d');
+
+let chart = new Chart(workChart, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Work Done (J)',
+            data: [],
+            borderColor: 'blue',
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Work Done (J)'
+                }
+            }
+        }
+    }
+});
+
+function updateSimulation() {
+    const force = forceSlider.value;
+    const distance = distanceSlider.value;
+    const work = (force * distance).toFixed(2);
+
+    forceValue.textContent = force;
+    distanceValue.textContent = distance;
+    workValue.textContent = work;
+
+    updateChartData(work);
+}
+
+function updateChartData(work) {
+    const now = new Date().toLocaleTimeString();
+    chart.data.labels.push(now);
+    chart.data.datasets[0].data.push(work);
+
+    if (chart.data.labels.length > 10) {
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+    }
+
+    chart.update();
+}
+
+forceSlider.addEventListener('input', updateSimulation);
+distanceSlider.addEventListener('input', updateSimulation);
+
+window.onload = updateSimulation;
+
+    </script>
+</body>
+</html>

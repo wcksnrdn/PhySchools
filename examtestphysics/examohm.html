@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhySchools - Ohm's Law Exam Test</title>
+  <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+  <style>
+   body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #eaf1f1, #88236f, rgb(114, 114, 247));
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.containerjudul {
+    box-shadow: 2px 5px 20px 5px rgba(0, 0, 0, 0.411);
+    border-radius: 15px;
+    max-width: 600px;
+    padding: 20px;
+    animation: slideIn 0.5s ease-out;
+    background: linear-gradient(135deg, rgb(255, 255, 255),white, #88236f, #ff89ff);
+    font-family: 'montserrat';
+    color: rgb(51, 49, 49);
+}
+.containerjudul p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .containerjudul ul {
+            font-style: italic;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .containerjudul ul li {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 2px 5px 20px 5px rgba(0, 0, 0, 0.411);
+  animation: slideIn 0.5s ease-out;
+  border: 2px solid white;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+h1 {
+  text-align: center;
+  font-size: 40px;
+  color: #000000;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.question {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  color: #000000;
+  margin-top: 50px;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+  cursor: pointer;
+  position: relative;
+  padding-left: 35px;
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+label input[type="radio"] {
+  display: none;
+}
+
+.custom-radio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+label input[type="radio"]:checked + .custom-radio {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-radio::after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+label input[type="radio"]:checked + .custom-radio::after {
+  display: block;
+}
+
+label .custom-radio::after {
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  transform: translate(-50%, -50%);
+}
+
+button {
+  display: block;
+  margin: 0 auto;
+  padding: 15px 30px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+}
+
+button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+}
+
+#popup {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.5s ease-in-out;
+  margin: 0 auto;
+}
+
+.popup-content {
+    font-size: 21px;
+  background-color: #fff;
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 15px;
+  position: relative;
+  animation: zoomIn 0.3s ease-out;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'montserrat';
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.5em;
+  color: #000000;
+  animation: fadeIn 1s ease-in-out;
+}
+
+button#confirm-btn, button#cancel-btn {
+  margin: 10px 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+button#confirm-btn:hover, button#cancel-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+}
+
+button#confirm-btn:active, button#cancel-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+}
+
+/* Timer styles */
+#timer {
+  position: fixed;
+  font-family: 'montserrat';
+  top: 10px;
+  right: 10px;
+  font-size: 1.2em;
+  background: linear-gradient(to right,  rgb(0, 0, 0), rgb(0, 0, 0), rgb(255, 0, 0));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  padding: 10px 20px;
+  border-radius: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.452);
+  font-weight: bold;
+}
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+
+::-webkit-scrollbar {
+    height: 3px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #3b3535; 
+    border-radius: 5px; 
+}
+
+</style>
+<body>
+    <div id="timer">Time Left: 30:00</div>
+    <div class="container">
+        <div class="containerjudul">
+        <h1>Ohm's Law Exam</h1>
+        <p>Description:</p>
+        <ul>
+            <li>Question Procedure: Choose one correct answer from three provided options.</li>
+            <li>Rules: Cheating is strictly prohibited.</li>
+            <li>Time Limit: 30 minutes.</li>
+        </ul>   
+    </div>
+    <form id="quiz-form">
+        <div class="question">
+          <p>1. What is the resistance of a resistor with a voltage of 12 volts and a current of 3 amperes?</p>
+          <label>
+            <input type="radio" name="q1" value="a">
+            <span class="custom-radio"></span>
+            A. 36 ohms
+          </label>
+          <label>
+            <input type="radio" name="q1" value="b">
+            <span class="custom-radio"></span>
+            B. 4 ohms
+          </label>
+          <label>
+            <input type="radio" name="q1" value="c">
+            <span class="custom-radio"></span>
+            C. 9 ohms
+          </label>
+        </div>
+        <div class="question">
+          <p>2. What is the voltage across a resistor with a resistance of 6 ohms and a current of 2 amperes?</p>
+          <label>
+            <input type="radio" name="q2" value="a">
+            <span class="custom-radio"></span>
+            A. 3 volts
+          </label>
+          <label>
+            <input type="radio" name="q2" value="b">
+            <span class="custom-radio"></span>
+            B. 12 volts
+          </label>
+          <label>
+            <input type="radio" name="q2" value="c">
+            <span class="custom-radio"></span>
+            C. 8 volts
+          </label>
+        </div>
+        <div class="question">
+          <p>3. What is the current flowing through a resistor with a resistance of 10 ohms and a voltage of 50 volts?</p>
+          <label>
+            <input type="radio" name="q3" value="a">
+            <span class="custom-radio"></span>
+            A. 5 amperes
+          </label>
+          <label>
+            <input type="radio" name="q3" value="b">
+            <span class="custom-radio"></span>
+            B. 40 amperes
+          </label>
+          <label>
+            <input type="radio" name="q3" value="c">
+            <span class="custom-radio"></span>
+            C. 500 amperes
+          </label>
+        </div>
+        <div class="question">
+          <p>4. What is the power dissipation of a resistor with a resistance of 8 ohms and a current of 4 amperes?</p>
+          <label>
+            <input type="radio" name="q4" value="a">
+            <span class="custom-radio"></span>
+            A. 32 watts
+          </label>
+          <label>
+            <input type="radio" name="q4" value="b">
+            <span class="custom-radio"></span>
+            B. 2 watts
+          </label>
+          <label>
+            <input type="radio" name="q4" value="c">
+            <span class="custom-radio"></span>
+            C. 12 watts
+          </label>
+        </div>
+        <div class="question">
+          <p>5. If two resistors, 10 ohms and 15 ohms, are connected in series, what is the total resistance?</p>
+          <label>
+            <input type="radio" name="q5" value="a">
+            <span class="custom-radio"></span>
+            A. 25 ohms
+          </label>
+          <label>
+            <input type="radio" name="q5" value="b">
+            <span class="custom-radio"></span>
+            B. 5 ohms
+          </label>
+          <label>
+            <input type="radio" name="q5" value="c">
+            <span class="custom-radio"></span>
+            C. 150 ohms
+          </label>
+        </div>
+        <div class="question">
+          <p>6. If two resistors, 6 ohms and 9 ohms, are connected in parallel, what is the total resistance?</p>
+          <label>
+            <input type="radio" name="q6" value="a">
+            <span class="custom-radio"></span>
+            A. 3.6 ohms
+          </label>
+          <label>
+            <input type="radio" name="q6" value="b">
+            <span class="custom-radio"></span>
+            B. 15 ohms
+          </label>
+          <label>
+            <input type="radio" name="q6" value="c">
+            <span class="custom-radio"></span>
+            C. 2.6 ohms
+          </label>
+        </div>
+        <div class="question">
+          <p>7. What is the resistance of a series-parallel combination of resistors: 12 ohms, 8 ohms, and 6 ohms?</p>
+          <label>
+            <input type="radio" name="q7" value="a">
+            <span class="custom-radio"></span>
+            A. 26 ohms
+          </label>
+          <label>
+            <input type="radio" name="q7" value="b">
+            <span class="custom-radio"></span>
+            B. 12.5 ohms
+          </label>
+          <label>
+            <input type="radio" name="q7" value="c">
+            <span class="custom-radio"></span>
+            C. 4 ohms
+          </label>
+        </div>
+        <div class="question">
+          <p>8. What is the power consumed by a 10-ohm resistor when connected to a 20-volt power supply?</p>
+          <label>
+            <input type="radio" name="q8" value="a">
+            <span class="custom-radio"></span>
+            A. 2 watts
+          </label>
+          <label>
+            <input type="radio" name="q8" value="b">
+            <span class="custom-radio"></span>
+            B. 200 watts
+          </label>
+          <label>
+            <input type="radio" name="q8" value="c">
+            <span class="custom-radio"></span>
+            C. 400 watts
+          </label>
+        </div>
+        <div class="question">
+          <p>9. What happens to the total resistance when three resistors, each of 5 ohms, are connected in parallel?</p>
+          <label>
+            <input type="radio" name="q9" value="a">
+            <span class="custom-radio"></span>
+            A. It decreases
+          </label>
+          <label>
+            <input type="radio" name="q9" value="b">
+            <span class="custom-radio"></span>
+            B. It increases
+          </label>
+          <label>
+            <input type="radio" name="q9" value="c">
+            <span class="custom-radio"></span>
+            C. It remains the same
+          </label>
+        </div>
+        <div class="question">
+          <p>10. What is the resistance of a resistor that dissipates 50 watts of power when connected to a 25-volt power supply?</p>
+          <label>
+            <input type="radio" name="q10" value="a">
+            <span class="custom-radio"></span>
+            A. 1 ohm
+          </label>
+          <label>
+            <input type="radio" name="q10" value="b">
+            <span class="custom-radio"></span>
+            B. 2 ohms
+          </label>
+          <label>
+            <input type="radio" name="q10" value="c">
+            <span class="custom-radio"></span>
+            C. 5 ohms
+          </label>
+        </div>
+        <button type="submit" id="submit-btn">Submit</button>
+      </form>      
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span class="close">×</span>
+        <p>Are you sure you want to submit your answers?</p>
+        <p id="score-info"></p>
+        <button id="confirm-btn">Yes</button>
+        <button id="cancel-btn">No</button>
+      </div>
+    </div>
+    <div id="result"></div>
+  </div>
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+      var popup = document.getElementById('popup');
+      var closeBtn = document.querySelector('.close');
+      var submitBtn = document.getElementById('submit-btn');
+      var confirmBtn = document.getElementById('confirm-btn');
+var cancelBtn = document.getElementById('cancel-btn');
+var timerElement = document.getElementById('timer');
+var form = document.getElementById('quiz-form');
+var resultDiv = document.getElementById('result');
+var timeLeft = 1800; // 30 minutes in seconds
+var startTime;
+
+var answers = {
+  q1: false,
+  q2: false,
+  q3: false,
+  q4: false,
+  q5: false,
+  q6: false,
+  q7: false,
+  q8: false,
+  q9: false,
+  q10: false
+};
+
+var timerInterval;
+
+// Start the timer when the user selects an answer
+form.addEventListener('change', function () {
+  if (!timerInterval) {
+      startTime = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+  }
+});
+
+submitBtn.addEventListener('click', function (event) {
+  event.preventDefault();
+  popup.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', function () {
+  popup.style.display = 'none';
+});
+
+cancelBtn.addEventListener('click', function () {
+  popup.style.display = 'none';
+});
+
+window.addEventListener('click', function (event) {
+  if (event.target == popup) {
+      popup.style.display = 'none';
+  }
+});
+
+confirmBtn.addEventListener('click', function () {
+  clearInterval(timerInterval);
+  showResults();
+  popup.style.display = 'none';
+  lockForm();
+});
+
+function updateTimer() {
+  var currentTime = Date.now();
+  var elapsedTime = Math.floor((currentTime - startTime) / 1000);
+  var remainingTime = Math.max(timeLeft - elapsedTime, 0);
+  var minutes = Math.floor(remainingTime / 60);
+  var seconds = remainingTime % 60;
+  timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  if (remainingTime <= 0) {
+      clearInterval(timerInterval);
+      lockForm();
+  }
+}
+
+function lockForm() {
+  var inputs = form.querySelectorAll('input, button');
+  inputs.forEach(function (input) {
+      input.disabled = true;
+  });
+  timerElement.textContent = "Time is up!";
+}
+
+function showResults() {
+  var endTime = Date.now();
+  var timeTaken = Math.floor((endTime - startTime) / 1000);
+  var minutesTaken = Math.floor(timeTaken / 60);
+  var secondsTaken = timeTaken % 60;
+
+  var score = calculateScore();
+
+  resultDiv.innerHTML = `
+      <h2>Results</h2>
+      <p>Your Score: ${score}/10</p>
+      <p>Time Taken: ${minutesTaken}:${secondsTaken < 10 ? '0' : ''}${secondsTaken} minutes</p>
+  `;
+}
+
+function calculateScore() {
+  var score = 0;
+  var correctAnswers = {
+    q1: 'b',
+    q2: 'b',
+    q3: 'a',
+    q4: 'a',
+    q5: 'a',
+    q6: 'a',
+    q7: 'c',
+    q8: 'c',
+    q9: 'c',
+    q10: 'b'
+};
+
+
+  for (var question in correctAnswers) {
+      if (answers[question] === correctAnswers[question]) {
+          score++;
+      }
+  }
+  return score;
+}
+
+form.addEventListener('change', function (event) {
+  if (event.target.type === 'radio') {
+      answers[event.target.name] = event.target.value;
+  }
+});
+
+// Disable right-click
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
+
+// Disable certain key combinations
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'F12' || // F12 key
+      (e.ctrlKey && e.shiftKey && e.key === 'I') || // Ctrl+Shift+I
+      (e.ctrlKey && e.shiftKey && e.key === 'J') || // Ctrl+Shift+J
+      (e.ctrlKey && e.key === 'U')) { // Ctrl+U
+      e.preventDefault();
+  }
+});
+});
+</script>
+</body>
+</html>
+

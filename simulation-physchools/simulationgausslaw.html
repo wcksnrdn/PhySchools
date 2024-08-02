@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Gauss's Law Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Circular:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+    font-family: 'montserrat';
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgb(165, 165, 255), aqua, rgb(255, 90, 255));
+}
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+
+::-webkit-scrollbar {
+    height: 3px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff; 
+    border-radius: 5px; 
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff6b;
+    backdrop-filter: blur(10px);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 10px 0;
+    color: #333;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.simulation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gaussian-surface {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.charge {
+    width: 30px;
+    height: 30px;
+    background-color: #007bff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+    animation: move 2s infinite;
+}
+
+@keyframes move {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(10px, 10px);
+    }
+}
+
+.controls {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.controls input[type="range"] {
+    width: 80%;
+    appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.output {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.output h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation {
+    width: 100%;
+    text-align: center;
+}
+
+.explanation h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation p {
+    line-height: 1.6;
+}
+
+.explanation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.explanation li {
+    margin-bottom: 5px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+</style>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gauss's Law Simulation</h1>
+        </header>
+        <main>
+            <section class="simulation">
+                <div class="gaussian-surface">
+                    <div class="charge"></div>
+                </div>
+                <div class="controls">
+                    <label for="charge">Charge (Q): <span id="chargeValue">1</span> C</label>
+                    <input type="range" id="charge" min="1" max="20" value="1">
+                </div>
+            </section>
+            <section class="output">
+                <h2>Electric Field (E): <span id="electricFieldValue">0.00</span> N/C</h2>
+                <canvas id="electricFieldChart"></canvas>
+            </section>
+            <section class="explanation">
+                <h2>Understanding Gauss's Law</h2>
+                <p>Gauss's Law states that the electric flux through a closed surface is proportional to the charge enclosed by that surface. The formula is:</p>
+                <p><strong>Φ_E = Q / ε_0</strong></p>
+                <p>Where:</p>
+                <ul>
+                    <li><strong>Φ_E</strong> is the electric flux</li>
+                    <li><strong>Q</strong> is the total charge enclosed</li>
+                    <li><strong>ε_0</strong> is the vacuum permittivity (8.854 x 10<sup>-12</sup> F/m)</li>
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Gauss's Law Simulation by PhySchools</p>
+        </footer>
+    </div>
+    <script>
+        const chargeSlider = document.getElementById('charge');
+const chargeValue = document.getElementById('chargeValue');
+const electricFieldValue = document.getElementById('electricFieldValue');
+const electricFieldChart = document.getElementById('electricFieldChart').getContext('2d');
+
+const epsilon0 = 8.854e-12; // Vacuum permittivity
+
+let chart = new Chart(electricFieldChart, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Electric Field (N/C)',
+            data: [],
+            borderColor: 'blue',
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Electric Field (N/C)'
+                }
+            }
+        }
+    }
+});
+
+function updateSimulation() {
+    const charge = chargeSlider.value;
+    const electricField = (charge / epsilon0).toFixed(2);
+
+    chargeValue.textContent = charge;
+    electricFieldValue.textContent = electricField;
+
+    updateChartData(electricField);
+}
+
+function updateChartData(electricField) {
+    const now = new Date().toLocaleTimeString();
+    chart.data.labels.push(now);
+    chart.data.datasets[0].data.push(electricField);
+
+    if (chart.data.labels.length > 10) {
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+    }
+
+    chart.update();
+}
+
+chargeSlider.addEventListener('input', updateSimulation);
+
+window.onload = updateSimulation;
+
+    </script>
+</body>
+</html>

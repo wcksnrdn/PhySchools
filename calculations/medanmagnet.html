@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Magnetic Field Calculator</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #00ccff, #cc99ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .kalkulator {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6600ff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4d0099;
+        }
+
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+            display: none;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+            color: #333;
+        }
+
+        .steps {
+            text-align: left;
+            margin-top: 20px;
+            color: #333;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .steps h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .steps p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .kalkulator {
+                padding: 20px;
+            }
+
+            input[type="number"] {
+                width: calc(100% - 20px);
+            }
+
+            .result-container {
+                max-width: calc(100% - 40px);
+                width: calc(100% - 40px);
+                border-radius: 0;
+                margin-top: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="kalkulator">
+            <h2>Magnetic Field Calculator</h2>
+            <form id="magneticFieldForm">
+                <label for="current">Current (I) in Amperes:</label>
+                <input type="number" id="current" name="current" required>
+                
+                <label for="distance">Distance (r) in meters:</label>
+                <input type="number" id="distance" name="distance" required>
+                
+                <button type="button" onclick="calculateMagneticField()">Calculate</button>
+            </form>
+        </div>
+        
+        <div id="resultContainer" class="result-container">
+            <div class="result">
+                <h3>Result:</h3>
+                <p id="result"></p>
+            </div>
+            <div class="steps">
+                <h3>Calculation Steps:</h3>
+                <p id="steps"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateMagneticField() {
+            const I = parseFloat(document.getElementById('current').value);
+            const r = parseFloat(document.getElementById('distance').value);
+            const μ0 = 4 * Math.PI * 1e-7; // Permeability of free space
+
+            // Calculate magnetic field
+            const B = (μ0 * I) / (2 * Math.PI * r);
+
+            // Display results and calculation steps
+            document.getElementById('result').innerHTML = `
+                Magnetic Field (B): ${B.toExponential(2)} T
+            `;
+            document.getElementById('steps').innerHTML = `
+                B = (μ₀ * I) / (2 * π * r) <br>
+                B = (4π × 10⁻⁷ * ${I}) / (2 * π * ${r}) <br>
+                B = ${B.toExponential(2)} T
+            `;
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

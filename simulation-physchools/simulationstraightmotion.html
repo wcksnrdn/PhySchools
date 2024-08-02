@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Straight Motion Simulation</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+</head>
+<style>
+   body {
+    font-family: 'montserrat';
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgb(165, 165, 255), aqua, rgb(255, 90, 255));
+}
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+
+::-webkit-scrollbar {
+    height: 3px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff; 
+    border-radius: 5px; 
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff6b;
+    backdrop-filter: blur(10px);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 10px 0;
+    color: #333;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.simulation {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.motion {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.object {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #007bff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+    animation: moveLinear 5s linear infinite;
+}
+
+@keyframes moveLinear {
+    to {
+        left: 100%;
+    }
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.controls input[type="range"] {
+    width: 100%;
+    appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.output {
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.output h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation {
+    flex: 1;
+}
+
+.explanation h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation p {
+    line-height: 1.6;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+</style>
+<body>
+    <div class="container">
+        <header>
+            <h1>Straight Motion Simulation</h1>
+        </header>
+        <main>
+            <section class="simulation">
+                <div class="motion">
+                    <div class="object"></div>
+                </div>
+                <div class="controls">
+                    <label for="speed">Speed (m/s): <span id="speedValue">5</span></label>
+                    <input type="range" id="speed" min="1" max="20" value="10">
+                </div>
+            </section>
+            <section class="output">
+                <h2>Position (m): <span id="positionValue">0.00</span></h2>
+            </section>
+            <section class="explanation">
+                <h2>Straight Motion Basics</h2>
+                <p>Straight motion describes the movement of an object along a straight line path.</p>
+                <p>The position of the object can be calculated using the formula:</p>
+                <p><strong>x(t) = v * t</strong></p>
+                <ul>
+                    <li><strong>x(t)</strong> is the position of the object at time <strong>t</strong></li>
+                    <li><strong>v</strong> is the constant velocity (speed) of the object</li>
+                    <li><strong>t</strong> is the time elapsed since the motion started</li>
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Straight Motion Simulation by PhySchools</p>
+        </footer>
+    </div>
+    <script>
+        const speedSlider = document.getElementById('speed');
+const speedValue = document.getElementById('speedValue');
+const positionValue = document.getElementById('positionValue');
+const objectElement = document.querySelector('.object');
+
+let timeElapsed = 0; // Variable to track time elapsed
+let animationFrame = null; // Variable to hold animation frame
+
+speedSlider.addEventListener('input', () => {
+    const speed = speedSlider.value;
+    speedValue.textContent = speed;
+    updateMotion(speed);
+});
+
+function updateMotion(speed) {
+    const duration = 400 / speed; // Adjust duration based on speed
+    objectElement.style.animationDuration = `${duration}s`;
+    timeElapsed = 0; // Reset time elapsed
+    cancelAnimationFrame(animationFrame); // Cancel previous animation frame
+    animateMotion(speed);
+}
+
+function animateMotion(speed) {
+    const startTime = Date.now();
+
+    function step() {
+        const currentTime = Date.now();
+        const elapsedTime = (currentTime - startTime) / 1000; // Convert ms to seconds
+        const newPosition = speed * elapsedTime;
+        objectElement.style.left = `${newPosition}px`;
+        positionValue.textContent = newPosition.toFixed(2);
+
+        animationFrame = requestAnimationFrame(step);
+    }
+
+    animationFrame = requestAnimationFrame(step);
+}
+
+// Start animation on page load
+animateMotion(10); // Start with initial speed of 10 m/s
+
+    </script>
+</body>
+</html>

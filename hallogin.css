@@ -1,0 +1,172 @@
+body {
+    font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat */
+    background-image: url('foto/cartoon2.jpg'); /* Ganti 'nama_gambar.jpg' dengan URL gambar yang kamu inginkan */
+    background-size: cover; /* Memastikan gambar latar belakang mengisi seluruh area body */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    opacity: 0.95; /* Menambahkan transparansi pada latar belakang */
+    transition: opacity 0.3s;
+    backdrop-filter: blur(5px); /* Menambahkan efek blur pada latar belakang */
+}
+
+.login-container {
+    position: relative;
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(100px); /* Menambahkan efek blur pada latar belakang */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.726); /* Efek bayangan */
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
+h2 {
+    color: #000;
+    font-size: 23px;
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+.input-group {
+    margin-bottom: 40px; /* Menambah jarak antara kotak input */
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-group input {
+    background-color: #eee;
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    width: 22em;
+    border-radius: 1rem;
+    color: lightcoral;
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: text;
+    height: 20px;
+}
+
+.input-group input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px 0 rgba(0, 123, 255, 0.5);
+    box-shadow: 2px 2px 20px 5px rgba(0, 0, 0, 0.651);
+}
+
+.input-group label {
+    font-family: 'Montserrat';
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #ccc;
+    transition: top 0.3s, font-size 0.3s, color 0.3s, transform 0.3s;
+    font-size: 14px;
+}
+
+.input-group label.active {
+    top: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #000;
+    transform: translateY(-150%);
+}
+
+button {
+    background-color: #ffffff;
+    color: #8d8d8d;
+    border: 2px solid #007bff;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, color 0.3s;
+    outline: none; /* Hapus garis focus */
+}
+
+button:hover,
+:focus {
+  color: #ffffff;
+  background: #008cff;
+  border: 1px solid #008cff;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
+    0 0 100px #008cff;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Opsional: Gaya untuk tombol saat disabled */
+button:disabled {
+    background-color: #ccc;
+    color: #666;
+    border-color: #ccc;
+    cursor: not-allowed;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 20px;
+    top: 52%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.eye-animation {
+    transition: transform 0.3s ease;
+}
+
+.eye-closed {
+    transform: scaleY(1);
+    transform-origin: center;
+}
+
+.eye-open {
+    transform: scaleY(0);
+    transform-origin: center;
+}
+.forgot-link {
+    font-size: 15px;
+    margin-top: 10px;
+    padding: 10px;
+    font-family: 'montserrat';
+}
+.register-link {
+    margin-top: 10px;
+    display: flex;
+    font-size: 15px;
+    font-family: 'montserrat';
+    justify-content: flex-end; /* Mengatur tombol ke kanan */
+    align-items: center; /* Menyamakan tinggi tombol dengan elemen lain jika ada */
+    padding: 10px; /* Tambahkan padding jika diperlukan */
+}
+
+.signup-button {
+    position: relative;
+    padding: 10px 20px;
+    font-size: 13px;
+    background-color: #ffffff;
+    color: #003c44;
+    border: 2px solid #007bff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.3s; /* Tambahkan transition untuk transform */
+    font-style: italic;
+    cursor: pointer;
+}
+
+.signup-button:hover {
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.24);
+    color: white;
+    background-color: #0056b3; /* Warna biru yang lebih gelap saat dihover */
+    transform: translateY(-5px); /* Naik ke atas 5px saat di-hover */
+}

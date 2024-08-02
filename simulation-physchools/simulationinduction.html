@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Induction Simulation</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 10px 0;
+    color: #333;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.simulation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circuit {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.circuit .magnet, .circuit .coil {
+    width: 100px;
+    height: 100px;
+    background-color: #e0e0e0;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.circuit .magnet .glow, .circuit .coil .glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 123, 255, 0.5);
+    opacity: 0;
+    animation: glow-animation 1s infinite alternate;
+}
+
+@keyframes glow-animation {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.circuit .magnet .label, .circuit .coil .label {
+    font-weight: bold;
+    color: #333;
+    z-index: 1;
+}
+
+.controls {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.controls input[type="range"] {
+    width: 80%;
+    appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.output {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.output h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+canvas {
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.explanation {
+    width: 100%;
+    text-align: center;
+}
+
+.explanation h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation p {
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+</style>
+<body>
+    <div class="container">
+        <header>
+            <h1>Electromagnetic Induction Simulation</h1>
+        </header>
+        <main>
+            <section class="simulation">
+                <div class="circuit">
+                    <div class="magnet">
+                        <span class="label">Magnet</span>
+                        <div class="glow"></div>
+                    </div>
+                    <div class="coil">
+                        <span class="label">Coil</span>
+                        <div class="glow"></div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <label for="velocity">Velocity (v): <span id="velocityValue">1</span> m/s</label>
+                    <input type="range" id="velocity" min="1" max="20" value="1">
+                    
+                    <label for="magneticField">Magnetic Field (B): <span id="magneticFieldValue">1</span> T</label>
+                    <input type="range" id="magneticField" min="1" max="10" value="1">
+                </div>
+            </section>
+            <section class="output">
+                <h2>Induced Voltage (E): <span id="inducedVoltageValue">0</span> V</h2>
+                <canvas id="voltageChart"></canvas>
+            </section>
+            <section class="explanation">
+                <h2>Understanding Electromagnetic Induction</h2>
+                <p>Electromagnetic induction occurs when a conductor is placed in a changing magnetic field (or when a conductor is moving through a stationary magnetic field), causing a voltage (emf) to be induced in the conductor. The formula for induced voltage is:</p>
+                <p><strong>E = B * v * l</strong></p>
+                <p>Where:</p>
+                <ul>
+                    <li><strong>E</strong> is the induced voltage in volts (V)</li>
+                    <li><strong>B</strong> is the magnetic field in teslas (T)</li>
+                    <li><strong>v</strong> is the velocity in meters per second (m/s)</li>
+                    <li><strong>l</strong> is the length of the conductor in meters (m)</li>
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Electromagnetic Induction Simulation by PhySchools</p>
+        </footer>
+    </div>
+    <script>
+        const velocitySlider = document.getElementById('velocity');
+const magneticFieldSlider = document.getElementById('magneticField');
+const velocityValue = document.getElementById('velocityValue');
+const magneticFieldValue = document.getElementById('magneticFieldValue');
+const inducedVoltageValue = document.getElementById('inducedVoltageValue');
+const voltageChartCtx = document.getElementById('voltageChart').getContext('2d');
+
+let chart = new Chart(voltageChartCtx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Induced Voltage (V)',
+            data: [],
+            borderColor: 'blue',
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Voltage (V)'
+                }
+            }
+        }
+    }
+});
+
+function updateSimulation() {
+    const velocity = parseFloat(velocitySlider.value);
+    const magneticField = parseFloat(magneticFieldSlider.value);
+    const length = 1; // Assuming a constant length of the conductor
+    const inducedVoltage = (magneticField * velocity * length).toFixed(2);
+
+    velocityValue.textContent = velocity;
+    magneticFieldValue.textContent = magneticField;
+    inducedVoltageValue.textContent = inducedVoltage;
+
+    updateChartData(inducedVoltage);
+    updateAnimation(velocity, magneticField);
+}
+
+function updateChartData(inducedVoltage) {
+    const now = new Date().toLocaleTimeString();
+    chart.data.labels.push(now);
+    chart.data.datasets[0].data.push(inducedVoltage);
+
+    if (chart.data.labels.length > 10) {
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+    }
+
+    chart.update();
+}
+
+function updateAnimation(velocity, magneticField) {
+    const magnetGlow = document.querySelector('.magnet .glow');
+    const coilGlow = document.querySelector('.coil .glow');
+    const glowIntensity = Math.min((velocity / 20) + (magneticField / 10), 1);
+
+    magnetGlow.style.opacity = glowIntensity;
+    coilGlow.style.opacity = glowIntensity;
+}
+
+velocitySlider.addEventListener('input', updateSimulation);
+magneticFieldSlider.addEventListener('input', updateSimulation);
+
+window.onload = updateSimulation;
+
+    </script>
+</body>
+</html>

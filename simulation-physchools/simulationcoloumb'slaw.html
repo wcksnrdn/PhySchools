@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Coulomb's Law Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Circular:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+</head>
+<style>
+   body {
+    font-family: 'montserrat';
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgb(255, 176, 176), rgb(255, 240, 158), rgb(255, 204, 110));
+}
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+
+::-webkit-scrollbar {
+    height: 3px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff; 
+    border-radius: 5px; 
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #9797972f;
+    backdrop-filter: blur(10px);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 10px 0;
+    color: #333;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.simulation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.charges {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.charge {
+    width: 50px;
+    height: 50px;
+    background-color: #ff5722;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 87, 34, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.controls {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.controls input[type="range"] {
+    width: 80%;
+    appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #ff5722;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 87, 34, 0.7);
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ff5722;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 87, 34, 0.7);
+}
+
+.output {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.output h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation {
+    width: 100%;
+    text-align: center;
+}
+
+.explanation h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation p {
+    line-height: 1.6;
+}
+
+.explanation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.explanation li {
+    margin-bottom: 5px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+
+</style>
+<body>
+    <div class="container">
+        <header>
+            <h1>Coulomb's Law Simulation</h1>
+        </header>
+        <main>
+            <section class="simulation">
+                <div class="charges">
+                    <div class="charge" id="charge1Display">q1</div>
+                    <div class="charge" id="charge2Display">q2</div>
+                </div>
+                <div class="controls">
+                    <label for="charge1">Charge 1 (C): <span id="charge1Value">1</span></label>
+                    <input type="range" id="charge1" min="0.1" max="10" step="0.1" value="1">
+                    
+                    <label for="charge2">Charge 2 (C): <span id="charge2Value">1</span></label>
+                    <input type="range" id="charge2" min="0.1" max="10" step="0.1" value="1">
+                    
+                    <label for="distance">Distance (m): <span id="distanceValue">1</span> m</label>
+                    <input type="range" id="distance" min="0.1" max="10" step="0.1" value="1">
+                </div>
+            </section>
+            <section class="output">
+                <h2>Force (F): <span id="forceValue">8.99</span> N</h2>
+                <canvas id="forceChart"></canvas>
+            </section>
+            <section class="explanation">
+                <h2>Understanding Coulomb's Law</h2>
+                <p>Coulomb's Law describes the force between two point charges. The formula is:</p>
+                <p><strong>F = k * |q1 * q2| / r²</strong></p>
+                <p>Where:</p>
+                <ul>
+                    <li><strong>F</strong> is the force in newtons (N)</li>
+                    <li><strong>k</strong> is Coulomb's constant, approximately 8.99 x 10⁹ N·m²/C²</li>
+                    <li><strong>q1</strong> and <strong>q2</strong> are the magnitudes of the charges in coulombs (C)</li>
+                    <li><strong>r</strong> is the distance between the charges in meters (m)</li>
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Coulomb's Law Simulation by PhySchools</p>
+        </footer>
+    </div>
+    <script>
+        const charge1Slider = document.getElementById('charge1');
+const charge2Slider = document.getElementById('charge2');
+const distanceSlider = document.getElementById('distance');
+const charge1Value = document.getElementById('charge1Value');
+const charge2Value = document.getElementById('charge2Value');
+const distanceValue = document.getElementById('distanceValue');
+const forceValue = document.getElementById('forceValue');
+const charge1Display = document.getElementById('charge1Display');
+const charge2Display = document.getElementById('charge2Display');
+const forceChart = document.getElementById('forceChart').getContext('2d');
+
+const k = 8.99 * Math.pow(10, 9); // Coulomb's constant in N·m²/C²
+
+let chart = new Chart(forceChart, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Force (N)',
+            data: [],
+            borderColor: 'blue',
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Force (N)'
+                }
+            }
+        }
+    }
+});
+
+function updateSimulation() {
+    const q1 = parseFloat(charge1Slider.value);
+    const q2 = parseFloat(charge2Slider.value);
+    const r = parseFloat(distanceSlider.value);
+    const force = (k * Math.abs(q1 * q2) / Math.pow(r, 2)).toFixed(2);
+
+    charge1Value.textContent = q1;
+    charge2Value.textContent = q2;
+    distanceValue.textContent = r;
+    forceValue.textContent = force;
+
+    updateChartData(force);
+    updateChargePositions(r);
+}
+
+function updateChargePositions(distance) {
+    const chargeDistance = 20 * (distance / 10);
+    charge1Display.style.transform = `translateX(-${chargeDistance}px)`;
+    charge2Display.style.transform = `translateX(${chargeDistance}px)`;
+}
+
+function updateChartData(force) {
+    const now = new Date().toLocaleTimeString();
+    chart.data.labels.push(now);
+    chart.data.datasets[0].data.push(force);
+
+    if (chart.data.labels.length > 10) {
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+    }
+
+    chart.update();
+}
+
+charge1Slider.addEventListener('input', updateSimulation);
+charge2Slider.addEventListener('input', updateSimulation);
+distanceSlider.addEventListener('input', updateSimulation);
+
+window.onload = updateSimulation;
+
+    </script>
+</body>
+</html>

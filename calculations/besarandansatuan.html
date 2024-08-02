@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Unit Converter</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #00ccff, #cc99ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .unit-converter {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select, input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6600ff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4d0099;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+            color: #333;
+        }
+
+        .steps {
+            text-align: left;
+            margin-top: 20px;
+            color: #333;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .steps h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .steps p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .unit-converter {
+                padding: 20px;
+            }
+
+            .result-container {
+                max-width: calc(100% - 40px);
+                width: calc(100% - 40px);
+                border-radius: 0;
+                margin-top: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="unit-converter">
+            <h2>Unit Converter</h2>
+            <form id="unitConverterForm">
+                <label for="value">Value:</label>
+                <input type="number" id="value" name="value" required>
+                
+                <label for="fromUnit">From Unit:</label>
+                <select id="fromUnit" name="fromUnit" required>
+                    <optgroup label="Length">
+                        <option value="meters">Meters</option>
+                        <option value="kilometers">Kilometers</option>
+                        <option value="centimeters">Centimeters</option>
+                    </optgroup>
+                    <optgroup label="Mass">
+                        <option value="grams">Grams</option>
+                        <option value="kilograms">Kilograms</option>
+                    </optgroup>
+                    <optgroup label="Time">
+                        <option value="seconds">Seconds</option>
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                    </optgroup>
+                </select>
+
+                <label for="toUnit">To Unit:</label>
+                <select id="toUnit" name="toUnit" required>
+                    <optgroup label="Length">
+                        <option value="meters">Meters</option>
+                        <option value="kilometers">Kilometers</option>
+                        <option value="centimeters">Centimeters</option>
+                    </optgroup>
+                    <optgroup label="Mass">
+                        <option value="grams">Grams</option>
+                        <option value="kilograms">Kilograms</option>
+                    </optgroup>
+                    <optgroup label="Time">
+                        <option value="seconds">Seconds</option>
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                    </optgroup>
+                </select>
+                
+                <button type="button" onclick="convertUnits()">Convert</button>
+            </form>
+        </div>
+
+        <div id="resultContainer" class="result-container" style="display: none;">
+            <div class="result">
+                <h3>Converted Value:</h3>
+                <p id="result"></p>
+            </div>
+            <div class="steps">
+                <h3>Calculation Steps:</h3>
+                <p id="steps"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const conversionFactors = {
+            meters: {
+                meters: 1,
+                kilometers: 0.001,
+                centimeters: 100
+            },
+            kilometers: {
+                meters: 1000,
+                kilometers: 1,
+                centimeters: 100000
+            },
+            centimeters: {
+                meters: 0.01,
+                kilometers: 0.00001,
+                centimeters: 1
+            },
+            grams: {
+                grams: 1,
+                kilograms: 0.001
+            },
+            kilograms: {
+                grams: 1000,
+                kilograms: 1
+            },
+            seconds: {
+                seconds: 1,
+                minutes: 1/60,
+                hours: 1/3600
+            },
+            minutes: {
+                seconds: 60,
+                minutes: 1,
+                hours: 1/60
+            },
+            hours: {
+                seconds: 3600,
+                minutes: 60,
+                hours: 1
+            }
+        };
+
+        function convertUnits() {
+            const value = parseFloat(document.getElementById('value').value);
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+
+            const conversionFactor = conversionFactors[fromUnit][toUnit];
+            const convertedValue = value * conversionFactor;
+
+            document.getElementById('result').innerText = `${convertedValue.toFixed(2)} ${toUnit}`;
+            document.getElementById('steps').innerHTML = `
+                ${value} ${fromUnit} * ${conversionFactor} = ${convertedValue.toFixed(2)} ${toUnit}
+            `;
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

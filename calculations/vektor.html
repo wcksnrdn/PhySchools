@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Vector Calculator</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #00ccff, #cc99ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .kalkulator-vector {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6600ff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4d0099;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+            color: #333;
+        }
+
+        .steps {
+            text-align: left;
+            margin-top: 20px;
+            color: #333;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .steps h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .steps p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .kalkulator-vector {
+                padding: 20px;
+            }
+
+            .result-container {
+                max-width: calc(100% - 40px);
+                width: calc(100% - 40px);
+                border-radius: 0;
+                margin-top: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="kalkulator-vector">
+            <h2>Vector Calculator</h2>
+            <form id="vectorForm">
+                <label for="magnitude1">Magnitude of Vector 1 (m1):</label>
+                <input type="number" id="magnitude1" name="magnitude1" required>
+                
+                <label for="direction1">Direction of Vector 1 (θ1):</label>
+                <input type="number" id="direction1" name="direction1" required>
+                
+                <label for="magnitude2">Magnitude of Vector 2 (m2):</label>
+                <input type="number" id="magnitude2" name="magnitude2" required>
+                
+                <label for="direction2">Direction of Vector 2 (θ2):</label>
+                <input type="number" id="direction2" name="direction2" required>
+                
+                <button type="button" onclick="calculateVector()">Calculate Resultant Vector</button>
+            </form>
+        </div>
+
+        <div id="resultContainer" class="result-container" style="display: none;">
+            <div class="result">
+                <h3>Resultant Vector:</h3>
+                <p id="result"></p>
+            </div>
+            <div class="steps">
+                <h3>Calculation Steps:</h3>
+                <p id="steps"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateVector() {
+            const m1 = parseFloat(document.getElementById('magnitude1').value);
+            const θ1 = parseFloat(document.getElementById('direction1').value);
+            const m2 = parseFloat(document.getElementById('magnitude2').value);
+            const θ2 = parseFloat(document.getElementById('direction2').value);
+
+            // Convert angles from degrees to radians
+            const θ1Rad = θ1 * (Math.PI / 180);
+            const θ2Rad = θ2 * (Math.PI / 180);
+
+            // Calculate vector components
+            const Rx = m1 * Math.cos(θ1Rad) + m2 * Math.cos(θ2Rad);
+            const Ry = m1 * Math.sin(θ1Rad) + m2 * Math.sin(θ2Rad);
+
+            // Calculate magnitude of resultant vector
+            const magnitude = Math.sqrt(Math.pow(Rx, 2) + Math.pow(Ry, 2));
+
+            // Calculate direction of resultant vector (in degrees)
+            const direction = Math.atan2(Ry, Rx) * (180 / Math.PI);
+
+            // Display the result and calculation steps
+            document.getElementById('result').innerText = `Magnitude: ${magnitude.toFixed(2)}, Direction: ${direction.toFixed(2)}°`;
+            const steps = `
+                R_x = m_1 * cos(θ_1) + m_2 * cos(θ_2) <br>
+                R_y = m_1 * sin(θ_1) + m_2 * sin(θ_2) <br>
+                R_x = ${m1} * cos(${θ1}°) + ${m2} * cos(${θ2}°) <br>
+                R_y = ${m1} * sin(${θ1}°) + ${m2} * sin(${θ2}°) <br>
+                R_x = ${Rx.toFixed(2)} <br>
+                R_y = ${Ry.toFixed(2)} <br>
+                Magnitude = √(R_x^2 + R_y^2) = √(${Rx.toFixed(2)}^2 + ${Ry.toFixed(2)}^2) = ${magnitude.toFixed(2)} <br>
+                Direction = atan(R_y / R_x) = atan(${Ry.toFixed(2)} / ${Rx.toFixed(2)}) = ${direction.toFixed(2)}°
+            `;
+            document.getElementById('steps').innerHTML = steps;
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

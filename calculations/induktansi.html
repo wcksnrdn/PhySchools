@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Inductance Calculator</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #00ccff, #cc99ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .kalkulator-induktansi {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6600ff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4d0099;
+        }
+
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+            margin: 5px;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+            color: #333;
+        }
+
+        .steps {
+            text-align: left;
+            margin-top: 20px;
+            color: #333;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .steps h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .steps p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Untuk perangkat mobile */
+        @media (max-width: 768px) {
+            .kalkulator-induktansi {
+                padding: 20px;
+                display: flex;
+                flex-direction: column; /* Mengubah urutan elemen menjadi vertikal */
+                align-items: center; /* Pusatkan elemen secara horizontal */
+            }
+
+            input[type="number"] {
+                width: calc(100% - 20px);
+            }
+
+            .result-container {
+                max-width: calc(100% - 40px);
+                width: calc(100% - 40px);
+                border-radius: 0;
+                margin-top: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="calculation" class="kalkulator-induktansi">
+        <h2>Inductance Calculator</h2>
+        <form id="induktansiForm">
+            <label for="N">Jumlah lilitan (N):</label>
+            <input type="number" id="N" name="N" required>
+
+            <label for="mu">Permeabilitas bahan inti (μ) dalam H/m:</label>
+            <input type="number" id="mu" name="mu" required>
+
+            <label for="A">Luas penampang inti (A) dalam m²:</label>
+            <input type="number" id="A" name="A" required>
+
+            <label for="l">Panjang kumparan (l) dalam meter:</label>
+            <input type="number" id="l" name="l" required>
+
+            <button type="button" onclick="calculateInduktansi()">Hitung</button>
+        </form>
+    </div>
+
+    <div id="resultContainer" class="result-container" style="display: none;">
+        <div class="result">
+            <h3>Hasil:</h3>
+            <p id="result"></p>
+        </div>
+        <div class="steps">
+            <h3>Langkah-langkah Perhitungan:</h3>
+            <p id="steps"></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateInduktansi() {
+            const N = parseFloat(document.getElementById('N').value);
+            const mu = parseFloat(document.getElementById('mu').value);
+            const A = parseFloat(document.getElementById('A').value);
+            const l = parseFloat(document.getElementById('l').value);
+
+            const L = (N * N * mu * A) / l;
+
+            const steps = `
+                1. Induktansi (L) = (N² * μ * A) / l <br>
+                2. Induktansi (L) = (${N}² * ${mu} H/m * ${A} m²) / ${l} m <br>
+                3. Induktansi (L) = ${L.toFixed(6)} H
+            `;
+
+            document.getElementById('result').innerHTML = `
+                Induktansi (L): ${L.toFixed(6)} H
+            `;
+            document.getElementById('steps').innerHTML = steps;
+
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

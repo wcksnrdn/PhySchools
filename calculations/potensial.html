@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Calculator Potential</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #0099ff, #9966ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .calculator {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6600ff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4d0099;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+            color: #333;
+        }
+
+        .steps {
+            text-align: left;
+            margin-top: 20px;
+            color: #333;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .steps h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .steps p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .calculator {
+                padding: 20px;
+            }
+
+            .result-container {
+                max-width: calc(100% - 40px);
+                width: calc(100% - 40px);
+                border-radius: 0;
+                margin-top: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <h2>Electric Potential Calculator</h2>
+            <form id="electricPotentialForm">
+                <label for="charge">Charge (q) in Coulombs:</label>
+                <input type="number" id="charge" name="charge" required>
+                <label for="distance">Distance (r) in meters:</label>
+                <input type="number" id="distance" name="distance" required>
+                <button type="button" onclick="calculatePotential()">Calculate Potential</button>
+            </form>
+        </div>
+
+        <div id="resultContainer" class="result-container" style="display: none;">
+            <div class="result">
+                <h3>Result:</h3>
+                <p id="result"></p>
+            </div>
+            <div class="steps">
+                <h3>Steps:</h3>
+                <p id="steps"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculatePotential() {
+            var charge = parseFloat(document.getElementById("charge").value);
+            var distance = parseFloat(document.getElementById("distance").value);
+            var k = 8.99e9;
+            var potential = k * charge / distance;
+            
+            var steps = `
+                V = k * q / r <br>
+                V = ${k} * ${charge} / ${distance} <br>
+                V = ${potential.toFixed(2)} volts
+            `;
+
+            document.getElementById("result").innerHTML = `Electric Potential: ${potential.toFixed(2)} volts`;
+            document.getElementById("steps").innerHTML = steps;
+
+            document.getElementById("resultContainer").style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Vector Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Circular:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+    font-family: 'montserrat';
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to left, aquamarine, burlywood);
+}
+::-webkit-scrollbar {
+    width: 5px; 
+}
+
+
+::-webkit-scrollbar {
+    height: 3px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff; 
+    border-radius: 5px; 
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff3f;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 10px 0;
+    color: #333;
+    font-family: 'montserrat';
+}
+
+main {
+    display: flex;
+    font-family: 'montserrat';
+    flex-direction: column;
+    align-items: center;
+}
+
+.simulation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'montserrat';
+}
+
+canvas {
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    font-family: 'montserrat';
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgb(0, 0, 0);
+}
+
+.controls {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controls label {
+    font-family: 'montserrat';
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.controls input[type="range"] {
+    width: 80%;
+    appearance: none;
+    height: 6px;
+    background: linear-gradient(to right, red, blue);
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #000000;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+}
+
+.output {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.output h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation {
+    width: 100%;
+    text-align: center;
+}
+
+.explanation h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.explanation p {
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+</style>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vector Simulation</h1>
+        </header>
+        <main>
+            <section class="simulation">
+                <canvas id="vectorCanvas"></canvas>
+                <div class="controls">
+                    <label for="vector1Magnitude">Vector 1 Magnitude: <span id="vector1MagnitudeValue">1</span></label>
+                    <input type="range" id="vector1Magnitude" min="1" max="10" step="0.1" value="1">
+                    
+                    <label for="vector1Angle">Vector 1 Angle (°): <span id="vector1AngleValue">0</span></label>
+                    <input type="range" id="vector1Angle" min="0" max="360" step="1" value="0">
+                    
+                    <label for="vector2Magnitude">Vector 2 Magnitude: <span id="vector2MagnitudeValue">1</span></label>
+                    <input type="range" id="vector2Magnitude" min="1" max="10" step="0.1" value="1">
+                    
+                    <label for="vector2Angle">Vector 2 Angle (°): <span id="vector2AngleValue">0</span></label>
+                    <input type="range" id="vector2Angle" min="0" max="360" step="1" value="0">
+                </div>
+            </section>
+            <section class="output">
+                <h2>Resultant Vector</h2>
+                <p>Magnitude: <span id="resultantMagnitudeValue">0</span></p>
+                <p>Angle: <span id="resultantAngleValue">0</span>°</p>
+            </section>
+            <section class="explanation">
+                <h2>Understanding Vectors</h2>
+                <p>A vector is a quantity that has both magnitude and direction. In this simulation, you can adjust the magnitudes and directions of two vectors and see the resultant vector.</p>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Vector Simulation by PhySchools</p>
+        </footer>
+    </div>
+    <script>
+        const vector1MagnitudeSlider = document.getElementById('vector1Magnitude');
+const vector1AngleSlider = document.getElementById('vector1Angle');
+const vector2MagnitudeSlider = document.getElementById('vector2Magnitude');
+const vector2AngleSlider = document.getElementById('vector2Angle');
+const vector1MagnitudeValue = document.getElementById('vector1MagnitudeValue');
+const vector1AngleValue = document.getElementById('vector1AngleValue');
+const vector2MagnitudeValue = document.getElementById('vector2MagnitudeValue');
+const vector2AngleValue = document.getElementById('vector2AngleValue');
+const resultantMagnitudeValue = document.getElementById('resultantMagnitudeValue');
+const resultantAngleValue = document.getElementById('resultantAngleValue');
+const vectorCanvas = document.getElementById('vectorCanvas');
+const ctx = vectorCanvas.getContext('2d');
+
+vectorCanvas.width = 400;
+vectorCanvas.height = 400;
+
+function drawVector(x, y, magnitude, angle, color) {
+    const endX = x + magnitude * Math.cos(angle * Math.PI / 180);
+    const endY = y - magnitude * Math.sin(angle * Math.PI / 180);
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(endX, endY);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    const headLength = 10;
+    const headAngle = Math.PI / 6;
+    ctx.beginPath();
+    ctx.moveTo(endX, endY);
+    ctx.lineTo(endX - headLength * Math.cos(angle - headAngle), endY + headLength * Math.sin(angle - headAngle));
+    ctx.lineTo(endX - headLength * Math.cos(angle + headAngle), endY + headLength * Math.sin(angle + headAngle));
+    ctx.lineTo(endX, endY);
+    ctx.fillStyle = color;
+    ctx.fill();
+}
+
+function updateSimulation() {
+    const vector1Magnitude = parseFloat(vector1MagnitudeSlider.value);
+    const vector1Angle = parseFloat(vector1AngleSlider.value);
+    const vector2Magnitude = parseFloat(vector2MagnitudeSlider.value);
+    const vector2Angle = parseFloat(vector2AngleSlider.value);
+
+    vector1MagnitudeValue.textContent = vector1Magnitude;
+    vector1AngleValue.textContent = vector1Angle;
+    vector2MagnitudeValue.textContent = vector2Magnitude;
+    vector2AngleValue.textContent = vector2Angle;
+
+    const vector1X = vector1Magnitude * Math.cos(vector1Angle * Math.PI / 180);
+    const vector1Y = vector1Magnitude * Math.sin(vector1Angle * Math.PI / 180);
+    const vector2X = vector2Magnitude * Math.cos(vector2Angle * Math.PI / 180);
+    const vector2Y = vector2Magnitude * Math.sin(vector2Angle * Math.PI / 180);
+
+    const resultantX = vector1X + vector2X;
+    const resultantY = vector1Y + vector2Y;
+    const resultantMagnitude = Math.sqrt(resultantX * resultantX + resultantY * resultantY).toFixed(2);
+    const resultantAngle = (Math.atan2(resultantY, resultantX) * 180 / Math.PI).toFixed(2);
+
+    resultantMagnitudeValue.textContent = resultantMagnitude;
+    resultantAngleValue.textContent = resultantAngle;
+
+    ctx.clearRect(0, 0, vectorCanvas.width, vectorCanvas.height);
+
+    const originX = vectorCanvas.width / 2;
+    const originY = vectorCanvas.height / 2;
+
+    drawVector(originX, originY, vector1Magnitude * 20, vector1Angle, 'blue');
+    drawVector(originX, originY, vector2Magnitude * 20, vector2Angle, 'green');
+    drawVector(originX, originY, resultantMagnitude * 20, parseFloat(resultantAngle), 'red');
+}
+
+vector1MagnitudeSlider.addEventListener('input', updateSimulation);
+vector1AngleSlider.addEventListener('input', updateSimulation);
+vector2MagnitudeSlider.addEventListener('input', updateSimulation);
+vector2AngleSlider.addEventListener('input', updateSimulation);
+
+window.onload = updateSimulation;
+    </script>
+</body>
+</html>

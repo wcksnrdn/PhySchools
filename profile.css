@@ -1,0 +1,171 @@
+/* General styling for the body */
+body {
+    font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat */
+    background-image: url('foto/Picsart_24-05-18_13-20-58-369.jpg'); /* Ganti 'nama_gambar.jpg' dengan URL gambar yang kamu inginkan */
+    background-size: cover; /* Memastikan gambar latar belakang mengisi seluruh area body */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    opacity: 0.9; /* Menambahkan transparansi pada latar belakang */
+}
+
+/* Container for the profile section */
+.profile-container {
+    background-color: rgba(255, 255, 255, 0.3); /* Adjusted background color for better contrast */
+    padding: 20px;
+    box-shadow: 5px 4px 20px rgb(0, 0, 0);
+    text-align: center;
+    width: 500px;
+    border-radius: 25px; /* Slightly reduced border-radius for a more balanced look */
+    margin: 0 auto; /* Center the container horizontally */
+    backdrop-filter: blur(10px); /* Adding blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari support */
+}
+
+
+/* Styling for the profile image */
+.profile-icon {
+    width: 120px; /* Adjusted width */
+    height: 120px; /* Adjusted height */
+    border-radius: 50%;
+    object-fit: cover; /* Mengubah object-fit ke cover untuk mempertahankan rasio aspek */
+    margin-bottom: 20px;
+    box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.3); /* Menambahkan opacity ke shadow untuk tampilan lebih lembut */
+    border: 3px solid #007bff; /* Menambahkan border dengan warna yang sesuai */
+}
+
+
+/* Styling for the heading */
+h1 {
+    font-size: 27px;
+    margin-bottom: 20px;
+    color: #f8f7f7;
+    font-family: 'montserrat';
+}
+
+/* Styling for the profile form */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Styling for the label */
+form label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fdfdfd;
+    font-family: 'montserrat';
+}
+
+input[type="file"] {
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    color: #333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    width: auto; /* Adjust based on your preference */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #0056b3;
+}
+
+input[type="file"]:hover {
+    background-color: #e9ecef;
+}
+
+input[type="file"]:focus {
+    outline: none;
+    border-color: #0056b3;
+    background-color: #e9ecef;
+}
+
+
+/* Styling for the buttons */
+button, .btn {
+    background-color: #4db5df;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 5px 0;
+    transition: background-color 0.3s;
+    font-family: 'montserrat';
+}
+
+button:hover, .btn:hover {
+    background-color: #0056b3;
+}
+
+button:focus, .btn:focus {
+    outline: none;
+}
+
+/* Styling for the logout link */
+
+.back-btn {
+    background-color: #6c757d;
+    margin-top: 10px;
+}
+
+.back-btn:hover {
+    background-color: #5a6268;
+}
+
+.dropbtn {
+    background-color: #00ccffd7;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-family: 'montserrat';
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    z-index: 1;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}

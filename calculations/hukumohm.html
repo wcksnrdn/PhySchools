@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhySchools - Ohm's Law Calculator</title>
+    <link rel="icon" type="image/x-icon" href="moleculeicon.png">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #00ccff, #cc99ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .kalkulator-ohm {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6600ff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4d0099;
+        }
+
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+            margin: 5px;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+            color: #333;
+        }
+
+        .steps {
+            text-align: left;
+            margin-top: 20px;
+            color: #333;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .steps h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .steps p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Untuk perangkat mobile */
+        @media (max-width: 768px) {
+            .kalkulator-ohm {
+                padding: 20px;
+                display: flex;
+                flex-direction: column; /* Mengubah urutan elemen menjadi vertikal */
+                align-items: center; /* Pusatkan elemen secara horizontal */
+            }
+
+            input[type="number"] {
+                width: calc(100% - 20px);
+            }
+
+            .result-container {
+                max-width: calc(100% - 40px);
+                width: calc(100% - 40px);
+                border-radius: 0;
+                margin-top: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="calculation" class="kalkulator-ohm">
+        <h2>Ohm's Law Calculator</h2>
+        <form id="ohmForm">
+            <label for="v">Tegangan (V) dalam volt (V):</label>
+            <input type="number" id="v" name="v" required>
+
+            <label for="i">Arus (I) dalam ampere (A):</label>
+            <input type="number" id="i" name="i" required>
+
+            <label for="r">Resistansi (R) dalam ohm (Ω):</label>
+            <input type="number" id="r" name="r">
+
+            <button type="button" onclick="calculateOhm()">Hitung</button>
+        </form>
+    </div>
+
+    <div id="resultContainer" class="result-container" style="display: none;">
+        <div class="result">
+            <h3>Hasil:</h3>
+            <p id="result"></p>
+        </div>
+        <div class="steps">
+            <h3>Langkah-langkah Perhitungan:</h3>
+            <p id="steps"></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateOhm() {
+            const v = parseFloat(document.getElementById('v').value);
+            const i = parseFloat(document.getElementById('i').value);
+            const r = parseFloat(document.getElementById('r').value);
+
+            let result = '';
+            let steps = '';
+
+            if (!isNaN(v) && !isNaN(i) && isNaN(r)) {
+                // Hitung Resistansi
+                const calculatedR = v / i;
+                result = `Resistansi (R): ${calculatedR.toFixed(2)} Ω`;
+                steps = `
+                    1. R = V / I <br>
+                    2. R = ${v} V / ${i} A <br>
+                    3. R = ${calculatedR.toFixed(2)} Ω
+                `;
+            } else if (!isNaN(v) && isNaN(i) && !isNaN(r)) {
+                // Hitung Arus
+                const calculatedI = v / r;
+                result = `Arus (I): ${calculatedI.toFixed(2)} A`;
+                steps = `
+                    1. I = V / R <br>
+                    2. I = ${v} V / ${r} Ω <br>
+                    3. I = ${calculatedI.toFixed(2)} A
+                `;
+            } else if (isNaN(v) && !isNaN(i) && !isNaN(r)) {
+                // Hitung Tegangan
+                const calculatedV = i * r;
+                result = `Tegangan (V): ${calculatedV.toFixed(2)} V`;
+                steps = `
+                    1. V = I * R <br>
+                    2. V = ${i} A * ${r} Ω <br>
+                    3. V = ${calculatedV.toFixed(2)} V
+                `;
+            } else {
+                result = 'Masukkan dua nilai untuk menghitung yang ketiga.';
+            }
+
+            document.getElementById('result').innerHTML = result;
+            document.getElementById('steps').innerHTML = steps;
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
